@@ -4,15 +4,15 @@ def full_path(path):
     '''Return absolute path with expanded ~s, input path assumed relative to cwd'''
     return os.path.abspath(os.path.join(os.getcwd(), os.path.expanduser(path)))
 
-def files_and_folders(dir_path='.'):
-    files = []
+def folders_and_files(dir_path='.'):
     folders = []
+    files = []
     for filename in sorted(os.listdir(dir_path)):
         if os.path.isdir(os.path.join(dir_path, filename)):
             folders.append(filename)
         else:
             files.append(filename)
-    return tuple(files), tuple(folders)
+    return tuple(folders), tuple(files)
 
 class FileDataSource(object):
     '''ui.TableView data source that generates a directory listing'''
@@ -23,8 +23,7 @@ class FileDataSource(object):
 
     def refresh(self):
         '''Refresh the list of files and folders'''
-        self.lists = self.files, self.folders = files_and_folders(self.path)
-        self.lists = self.folders, self.files
+        self.lists = self.folders, self.files = folders_and_files(self.path)
 
     def tableview_number_of_sections(self, tableview):
         '''Return the number of sections'''
